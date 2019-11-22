@@ -13,7 +13,7 @@ public class OrderService{
     @Autowired
     OrderRepository orderRepository;
 
-    public List<Order> getAllOrders()
+    public List<Order> getAllOrdersDetails()
     {
         return (List<Order>)orderRepository.findAll();
     }
@@ -28,4 +28,15 @@ public class OrderService{
     {
         return orderRepository.findOrdersByCustomerId(customerId);
     }
+
+    public Order createOrder(Integer customerId, Order order)
+    {
+        return orderRepository.save(order);
+    }
+
+    public Order getSpecificOrderDetailsForACustomer(Integer customerId, Integer orderId)
+    {
+        return orderRepository.findSpecificOrderDetailsForACustomer(customerId, orderId);
+    }
+
 }
