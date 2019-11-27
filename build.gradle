@@ -43,6 +43,7 @@ dependencies {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 	compile 'com.googlecode.lambdaj:lambdaj:2.3.3'
+	implementation 'org.springframework.kafka:spring-kafka'
 }
 
 dependencyManagement {
