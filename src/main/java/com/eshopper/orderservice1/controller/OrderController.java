@@ -60,6 +60,7 @@ public class OrderController {
     }
 
     //Get specific order details including products
+
     @GetMapping(path = "/{orderNumber}/product/details", produces = APPLICATION_JSON_VALUE)
     public List<OrderProducts> getSpecificOrderDetailsForACustomer(@PathVariable("orderNumber") Integer orderNumber) throws JsonProcessingException {
         return orderProductsService.getDetailedProductsInAnOrder(orderNumber);
