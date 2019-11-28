@@ -67,10 +67,11 @@ public class OrderController {
     }
 
 
-//    @PostMapping(path = "/{customerId}/orderPlaced")
-//    public Order createOrder(@PathVariable("customerId") Integer customerId, @RequestBody Order order) {
-//        return orderService.createOrder(customerId, order);
-//    }
+    @PostMapping(path = "/customer/{customerId}/orderPlaced")
+    public Order createOrder(@PathVariable("customerId") Integer customerId, @RequestBody Order order) {
+        System.out.println("%%%%%%%%%%%%%%%%%%%%%%%% "+order.getOrderProductsList().toString());
+        return orderService.createOrder(customerId, order);
+    }
 //
 ////    @PutMapping("/{customerid}/{orderId}/updateOrderDetails")
 ////    public Order updateOrder(@PathVariable("customerId") Integer customerId, @PathVariable("orderId") Integer orderId, @RequestBody Order order) {

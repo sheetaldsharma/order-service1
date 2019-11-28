@@ -75,7 +75,7 @@ public class Order {
     @NotNull
     private Float tax;
 
-//    @OneToMany(mappedBy = "orderNumber", cascade = CascadeType.ALL)
-//    List<OrderProducts> orderProductsList;
+    @OneToMany(mappedBy = "orderNumber", cascade = CascadeType.ALL)
+    List<OrderProducts> orderProductsList;
 }
 
