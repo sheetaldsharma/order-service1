@@ -8,14 +8,14 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDTO {
-    Integer id;
-    String firstName;
+    Integer customerId;
+    Integer orderId;
 
     @Override
     public String toString() {
         return "UserDTO{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
+                "customerId=" + customerId +
+                ", orderId=" + orderId +
                 '}';
     }
 }

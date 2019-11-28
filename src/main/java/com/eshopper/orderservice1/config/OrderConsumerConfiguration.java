@@ -16,7 +16,7 @@ import java.util.Map;
 
 @EnableKafka
 @Configuration
-public class OrderKafkaConfiguration {
+public class OrderConsumerConfiguration {
 
 
 
