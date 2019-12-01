@@ -21,7 +21,7 @@ public class OrderListener {
     @Autowired
     private OrderProductsService orderProductsService;
 
-    @KafkaListener(topics = "CUSTOMER_PRODUCER")
+    //@KafkaListener(topics = "CUSTOMER_PRODUCER")
     public void orderDetailsListener(String message) throws IOException {
         System.out.println("==================== Consumed message: " + message);
         ObjectMapper mapper = new ObjectMapper();
