@@ -6,8 +6,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class OrderService1ApplicationTests {
 
-	//@Test
+	@Test
 	void contextLoads() {
+		OrderService1Application.main(new String[] {});
 	}
 
 }

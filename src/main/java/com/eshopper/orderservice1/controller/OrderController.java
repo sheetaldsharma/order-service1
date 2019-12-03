@@ -44,7 +44,7 @@ public class OrderController {
     @GetMapping(path = "/all", produces = APPLICATION_JSON_VALUE)
     public List<Order> getAllOrdersDetails() {
         System.out.println("size = " + orderService.getAllOrdersDetails().size());
-        return (List<Order>) orderService.getAllOrdersDetails();
+        return orderService.getAllOrdersDetails();
     }
 
     //Get order details from order table

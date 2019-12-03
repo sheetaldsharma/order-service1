@@ -31,7 +31,7 @@ public class OrderService{
 
     public List<Order> getAllOrdersDetails()
     {
-        return (List<Order>)orderRepository.findAll();
+        return orderRepository.findAll();
     }
 
     public Optional<Order> getOrderDetails(Integer orderId)
@@ -51,12 +51,5 @@ public class OrderService{
         return orderRepository.save(order);
     }
 
-    public Order getSpecificOrderDetailsForACustomer(Integer customerId, Integer orderId)
-    {
-        //send event
-        //this.kafkaTemplate.send(TOPIC, new UserDTO(1, 1));
-        //this.kafkaTemplateListInt.send("ORDER_PRODUCT_DETAILS", Arrays.asList(1,2));
-        return orderRepository.findSpecificOrderDetailsForACustomer(customerId, orderId);
-    }
 
 }

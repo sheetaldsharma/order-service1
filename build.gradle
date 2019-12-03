@@ -44,6 +44,7 @@ dependencies {
 	}
 	compile 'com.googlecode.lambdaj:lambdaj:2.3.3'
 	implementation 'org.springframework.kafka:spring-kafka'
+	testCompile 'junit:junit:4.12'
 }
 
 dependencyManagement {
