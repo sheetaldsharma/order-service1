@@ -42,31 +42,31 @@ public class OrderController {
     RestTemplate restTemplate;
 
     @GetMapping(path = "/all", produces = APPLICATION_JSON_VALUE)
-    public List<Order> getAllOrdersDetails() throws OrderServiceException {
+    public ResponseEntity<List<Order>> getAllOrdersDetails() throws OrderServiceException {
         System.out.println("size = " + orderService.getAllOrdersDetails().size());
-        return orderService.getAllOrdersDetails();
+        return ResponseEntity.ok(orderService.getAllOrdersDetails());
     }
 
     //Get order details from order table
     @GetMapping(path = "/{orderId}/details", produces = APPLICATION_JSON_VALUE)
-    public Optional<Order> getOrderDetails(@PathVariable("orderId") Integer orderId) throws OrderServiceException {
-        return orderService.getOrderDetails(orderId);
+    public ResponseEntity<Optional<Order>> getOrderDetails(@PathVariable("orderId") Integer orderId) throws OrderServiceException {
+        return ResponseEntity.ok(orderService.getOrderDetails(orderId));
     }
 
     //get all orders for a customer
     @GetMapping(path = "/{customerId}/orderDetails", produces = APPLICATION_JSON_VALUE)
-    public List<Order> getCustomerAllOrderDetails(@PathVariable("customerId") Integer customerId) throws OrderServiceException {
-        return orderService.getCustomerOrderDetails(customerId);
+    public ResponseEntity<List<Order>> getCustomerAllOrderDetails(@PathVariable("customerId") Integer customerId) throws OrderServiceException {
+        return ResponseEntity.ok(orderService.getCustomerOrderDetails(customerId));
     }
 
     //Get specific order details including products
     @GetMapping(path = "/{orderNumber}/product/details", produces = APPLICATION_JSON_VALUE)
-    public List<OrderProducts> getSpecificOrderDetailsForACustomer(@PathVariable("orderNumber") Integer orderNumber) throws JsonProcessingException, OrderServiceException {
-        return orderProductsService.getDetailedProductsInAnOrder(orderNumber);
+    public ResponseEntity<List<OrderProducts>> getSpecificOrderDetailsForACustomer(@PathVariable("orderNumber") Integer orderNumber) throws JsonProcessingException, OrderServiceException {
+        return ResponseEntity.ok(orderProductsService.getDetailedProductsInAnOrder(orderNumber));
     }
 
     @PostMapping(path = "/orderPlaced")
-    public Order createOrder(@RequestBody Order order) throws OrderServiceException {
-        return orderService.createOrder(order);
+    public ResponseEntity<Order> createOrder(@RequestBody Order order) throws OrderServiceException {
+        return ResponseEntity.ok(orderService.createOrder(order));
     }
 }
