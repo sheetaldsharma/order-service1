@@ -1,6 +1,7 @@
 package com.eshopper.orderservice1.service;
 
 import com.eshopper.orderservice1.dto.UserDTO;
+import com.eshopper.orderservice1.exception.OrderServiceException;
 import com.eshopper.orderservice1.model.Order;
 import com.eshopper.orderservice1.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,40 +17,54 @@ public class OrderService{
     @Autowired
     OrderRepository orderRepository;
 
-
     @Autowired
     private KafkaTemplate<String, UserDTO> kafkaTemplate;
 
     @Autowired
     private KafkaTemplate<String, String> kafkaTemplateString;
 
-//    @Autowired
-//    private KafkaTemplate<String, List<Integer>>kafkaTemplateListInt;
+    public List<Order> getAllOrdersDetails() throws OrderServiceException {
 
-
-    private static final String TOPIC = "ORDER_DETAILS";
-
-    public List<Order> getAllOrdersDetails()
-    {
-        return orderRepository.findAll();
+        List<Order> orderList = null;
+        orderList = orderRepository.findAll();
+        if(orderList.size() == 0)
+        {
+            throw new OrderServiceException("No order details are available");
+        }
+        return orderList;
     }
 
-    public Optional<Order> getOrderDetails(Integer orderId)
-    {
-        System.out.println("in service ="+orderId);
-        return orderRepository.findById(orderId);
-    }
+    public Optional<Order> getOrderDetails(Integer orderId) throws OrderServiceException {
 
-
-    public List<Order> getCustomerOrderDetails(Integer customerId)
-    {
-        return orderRepository.findOrdersByCustomerId(customerId);
-    }
-
-    public Order createOrder(Integer customerId, Order order)
-    {
-        return orderRepository.save(order);
+        Optional<Order> order = Optional.empty();
+        order = orderRepository.findById(orderId);
+        if(order.isEmpty())
+        {
+            throw new OrderServiceException("No such order available");
+        }
+        return order;
     }
 
 
+    public List<Order> getCustomerOrderDetails(Integer customerId) throws OrderServiceException {
+        List<Order> orderList = null;
+        orderList = orderRepository.findOrdersByCustomerId(customerId);
+        if(orderList.size() == 0)
+        {
+            throw new OrderServiceException("No order details are available for a customer");
+        }
+        return orderList;
+    }
+
+    public Order createOrder(Order order) throws OrderServiceException {
+        Order order1 = null;
+        try {
+            order1 = orderRepository.save(order);
+        }
+        catch (Exception ex)
+        {
+            throw new OrderServiceException("Unable to create new order");
+        }
+        return  order1;
+    }
 }

@@ -1,5 +1,6 @@
 package com.eshopper.orderservice1.service;
 
+import com.eshopper.orderservice1.exception.OrderServiceException;
 import com.eshopper.orderservice1.model.Order;
 import com.eshopper.orderservice1.model.OrderProducts;
 import com.eshopper.orderservice1.repository.OrderProductsRepository;
@@ -16,6 +17,8 @@ import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
@@ -60,8 +63,7 @@ public class OrderProductsServiceTests {
     }
 
     @Test
-    public void shouldGetDetailedProductsInAnOrder()
-    {
+    public void shouldGetDetailedProductsInAnOrder() throws OrderServiceException {
         List<OrderProducts> orderProductsList = new ArrayList<>();
         orderProductsList.add(getOrderProducts1());
         orderProductsList.add(getOrderProducts2());
@@ -73,8 +75,16 @@ public class OrderProductsServiceTests {
 
         assertThat(orderProductsList.size()).isEqualTo(2);
         assertThat(actualOrderProductsList.size()).isEqualTo(orderProductsList.size());
-
-
     }
 
+    @Test
+    public void shouldThrowExceptionForGetDetailedProductsInAnOrder() throws OrderServiceException {
+
+        Exception exception = assertThrows(
+                OrderServiceException.class,
+                () -> orderProductsService.getDetailedProductsInAnOrder(1));
+
+        assertTrue(exception.getMessage().contentEquals("No order details are available"));
+
+    }
 }

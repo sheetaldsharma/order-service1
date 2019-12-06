@@ -3,12 +3,12 @@ package com.eshopper.orderservice1.controller;
 import ch.lambdaj.Lambda;
 import com.eshopper.orderservice1.dto.OrderDetailsDTO;
 import com.eshopper.orderservice1.dto.ProductDTO;
+import com.eshopper.orderservice1.exception.OrderServiceException;
 import com.eshopper.orderservice1.model.Order;
 import com.eshopper.orderservice1.model.OrderProducts;
 import com.eshopper.orderservice1.service.OrderProductsService;
 import com.eshopper.orderservice1.service.OrderService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.graalvm.compiler.nodes.calc.IntegerDivRemNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -42,39 +42,31 @@ public class OrderController {
     RestTemplate restTemplate;
 
     @GetMapping(path = "/all", produces = APPLICATION_JSON_VALUE)
-    public List<Order> getAllOrdersDetails() {
+    public List<Order> getAllOrdersDetails() throws OrderServiceException {
         System.out.println("size = " + orderService.getAllOrdersDetails().size());
         return orderService.getAllOrdersDetails();
     }
 
     //Get order details from order table
     @GetMapping(path = "/{orderId}/details", produces = APPLICATION_JSON_VALUE)
-    public Optional<Order> getOrderDetails(@PathVariable("orderId") Integer orderId) {
+    public Optional<Order> getOrderDetails(@PathVariable("orderId") Integer orderId) throws OrderServiceException {
         return orderService.getOrderDetails(orderId);
     }
 
     //get all orders for a customer
     @GetMapping(path = "/{customerId}/orderDetails", produces = APPLICATION_JSON_VALUE)
-    public List<Order> getCustomerAllOrderDetails(@PathVariable("customerId") Integer customerId) {
+    public List<Order> getCustomerAllOrderDetails(@PathVariable("customerId") Integer customerId) throws OrderServiceException {
         return orderService.getCustomerOrderDetails(customerId);
     }
 
     //Get specific order details including products
-
     @GetMapping(path = "/{orderNumber}/product/details", produces = APPLICATION_JSON_VALUE)
-    public List<OrderProducts> getSpecificOrderDetailsForACustomer(@PathVariable("orderNumber") Integer orderNumber) throws JsonProcessingException {
+    public List<OrderProducts> getSpecificOrderDetailsForACustomer(@PathVariable("orderNumber") Integer orderNumber) throws JsonProcessingException, OrderServiceException {
         return orderProductsService.getDetailedProductsInAnOrder(orderNumber);
     }
 
-
-    @PostMapping(path = "/customer/{customerId}/orderPlaced")
-    public Order createOrder(@PathVariable("customerId") Integer customerId, @RequestBody Order order) {
-        System.out.println("%%%%%%%%%%%%%%%%%%%%%%%% "+order.getOrderProductsList().toString());
-        return orderService.createOrder(customerId, order);
+    @PostMapping(path = "/orderPlaced")
+    public Order createOrder(@RequestBody Order order) throws OrderServiceException {
+        return orderService.createOrder(order);
     }
-//
-////    @PutMapping("/{customerid}/{orderId}/updateOrderDetails")
-////    public Order updateOrder(@PathVariable("customerId") Integer customerId, @PathVariable("orderId") Integer orderId, @RequestBody Order order) {
-////        return orderService.createOrder(customerId, orderId);
-////    }
 }

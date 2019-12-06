@@ -206,10 +206,10 @@ public class OrderControllerTests {
 //        @PostMapping(path = "/customer/{customerId}/orderPlaced")
         Order order = getOrderDetails1();
         Integer customerId = 1;
-        when(orderService.createOrder(customerId, order)).thenReturn(order);
+        when(orderService.createOrder(order)).thenReturn(order);
 
         mockMvc.perform(
-                MockMvcRequestBuilders.post("/order/customer/{customerId}/orderPlaced", customerId, order)
+                MockMvcRequestBuilders.post("/order/orderPlaced", customerId, order)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(order)))
                 .andExpect(status().isOk());

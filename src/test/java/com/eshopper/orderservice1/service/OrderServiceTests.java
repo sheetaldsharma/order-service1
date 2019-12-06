@@ -1,6 +1,7 @@
 package com.eshopper.orderservice1.service;
 
 import com.eshopper.orderservice1.controller.OrderController;
+import com.eshopper.orderservice1.exception.OrderServiceException;
 import com.eshopper.orderservice1.model.Order;
 import com.eshopper.orderservice1.model.OrderProducts;
 import com.eshopper.orderservice1.repository.OrderProductsRepository;
@@ -22,6 +23,8 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.BDDMockito.given;
@@ -125,7 +128,7 @@ public class OrderServiceTests {
     }
 
     @Test
-    public void shouldGetAllOrderDetails(){
+    public void shouldGetAllOrderDetails() throws OrderServiceException {
         List<Order> orderList = new ArrayList<>();
         orderList.add(getOrderDetails1());
         orderList.add(getOrderDetails2());
@@ -166,9 +169,54 @@ public class OrderServiceTests {
         Order order = getOrderDetails1();
         Integer customerId = 1;
         when(orderRepository.save(any(Order.class))).thenReturn(order);
-        Order actualUser = orderService.createOrder(customerId, order);
+        Order actualUser = orderService.createOrder(order);
         Assertions.assertEquals(actualUser, order);
     }
+
+    @Test
+    public void shouldThrowExceptionForGetAllOrderDetails() throws OrderServiceException {
+
+        Exception exception = assertThrows(
+                OrderServiceException.class,
+                () -> orderService.getAllOrdersDetails());
+
+        assertTrue(exception.getMessage().contentEquals("No order details are available"));
+
+    }
+
+    @Test
+    public void shouldThrowExceptionForGetOrderDetails() throws OrderServiceException {
+
+        Exception exception = assertThrows(
+                OrderServiceException.class,
+                () -> orderService.getOrderDetails(1));
+
+        assertTrue(exception.getMessage().contentEquals("No such order available"));
+
+    }
+
+    @Test
+    public void shouldThrowExceptionForGetCustomerAllOrderDetails() throws OrderServiceException {
+
+        Exception exception = assertThrows(
+                OrderServiceException.class,
+                () -> orderService.getCustomerOrderDetails(1));
+
+        assertTrue(exception.getMessage().contentEquals("No order details are available for a customer"));
+
+    }
+
+//    @Test
+//    public void shouldThrowExceptionForCreateOrder() throws OrderServiceException {
+//
+//        Order order = getOrderDetails1();
+//        Exception exception = assertThrows(
+//                OrderServiceException.class,
+//                () -> orderService.createOrder(order));
+//
+//        assertTrue(exception.getMessage().contentEquals("Unable to create new order"));
+//
+//    }
 
 }
 
